@@ -6,6 +6,21 @@
 //Lizeth Gutiérrez Torres - 220616369
 //Cristhian German  Ramírez  Ruiz - 223992922
 
+
+(*
+    Bueno, como introduccion inicial, el programa hemos hecho mediante un menu
+    para que podamos ver en ejecucion diferentes ejemplos algunas caracteristicas claves de
+    la programacion funcional. En este caso como primer inicio, ya aplicamos una de las caracteristicas que es la recursividad
+    en el menu de la funcion, lo facilita el codigo y lo hace mas limpio.
+
+    Para este caso, impelementamos al menos 3 caracteristicas comunes, que es:
+    1. Funcion Pura: que todo lo que entra, produce la misma salida
+    2. Funciones de Primera Clase: tratar funciones como variables y Orden Superior: aquellas que reciben funciones de primera clase como argumentos o devuelven otras funciones
+    3. Recursividad: Este es otra caracteristica que evita mayormente el uso de los bucles mutables o lógica condicional.
+
+    Y pues practicamente seria el uso de este programa, ejemplos basicos para poder entender la programacion funcional.
+*)
+
 //Aqui ya estamos aplicando una de las caracteristicas de la programacion funcional
 // Por ejemplo en esta funcion, necesitamos poner "rec" para que pueda llamarse a si misma sin usar ningun bucle
 let rec menu() =
@@ -90,6 +105,6 @@ let rec menu() =
         printfn "====================================="
         menu()
 
-
+//Ya aqui mandamos a llamar la funcion, para que genere el apartado en la consola y asi interactuar en ella.
 menu()
 
