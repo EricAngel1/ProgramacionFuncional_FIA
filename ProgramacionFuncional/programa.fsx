@@ -1,6 +1,6 @@
 
 //Miembros del Equipo 7
-//Angel Alexis Serrano Hernandez - 219906183
+//Angel Alexis Serrano Hernández - 219906183
 //Eric Eduardo Angel Angel - 223992884
 //Carlos González Rodríguez - 220886978
 //Lizeth Gutiérrez Torres - 220616369
@@ -8,24 +8,24 @@
 
 
 (*
-    Bueno, como introduccion inicial, el programa hemos hecho mediante un menu
-    para que podamos ver en ejecucion diferentes ejemplos de algunas caracteristicas claves de
-    la programacion funcional. En este caso como primer inicio, ya aplicamos una de las caracteristicas que es la recursividad
-    en el menu de la funcion, lo que facilita el codigo y lo hace mas limpio.
+    Como introducción inicial, en el programa hemos hecho un menú
+    para que podamos ver en ejecución diferentes ejemplos de algunas características claves de
+    la programación funcional. En este caso como primer inicio, aplicamos una de las características que es la recursividad
+    en el menú de la función, lo que facilita el código y lo hace más limpio.
 
-    Para este caso, impelementamos al menos 3 caracteristicas comunes, que es:
-    1. Funcion Pura: que todo lo que entra, produce la misma salida
+    Para este caso, implementamos al menos 3 características comunes, que es:
+    1. Función Pura: que todo lo que entra, produce la misma salida.
     2. Funciones de Primera Clase: tratar funciones como variables y Orden Superior: aquellas que reciben funciones de primera clase como argumentos o devuelven otras funciones
-    3. Recursividad: Este es otra caracteristica que evita mayormente el uso de los bucles mutables o lógica condicional.
+    3. Recursividad: Es otra característica que evita mayormente el uso de los bucles mutables o lógica condicional.
 
-    Y pues practicamente seria el uso de este programa, ejemplos basicos para poder entender la programacion funcional.
+   En resumen el uso de este programa serían ejemplos básicos para poder entender la programación funcional.
 *)
 
-//Aqui ya estamos aplicando una de las caracteristicas de la programacion funcional
-// Por ejemplo en esta funcion, necesitamos poner "rec" para que pueda llamarse a si misma sin usar ningun bucle
+//Aquí ya estamos aplicando una de las características de la programación funcional
+// Por ejemplo en ésta función, necesitamos poner "rec" para que pueda llamarse a si misma sin usar ningún bucle
 let rec menu() =
 
-    //En este caso se implemento un menu simple de las caracteristicas de la programacion funcional
+    //En este caso se implementó un menú simple de las características de la programación funcional
     printfn ""
     printfn "############## Caracteristicas Pro. Funcional ##############"
     printfn "1- Funcion Pura."
@@ -41,7 +41,7 @@ let rec menu() =
     match opcion with
     | "1" ->
 
-    // Aqui ya aplicamos la funcion pura
+    // Aplicamos la función pura
         let sumar x y = x + y // siempre devuelve el mismo resultado con los mismas variables
         let resultado = sumar 5 20
         printfn "====================================="
