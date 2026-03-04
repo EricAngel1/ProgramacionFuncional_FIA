@@ -14,7 +14,7 @@ let rec menu() =
     printfn ""
     printfn "############## Caracteristicas Pro. Funcional ##############"
     printfn "1- Funcion Pura."
-    printfn "2- Inmutables."
+    printfn "2- Funciones de Primera Clase y Orden Superior."
     printfn "3- Recursividad."
     printfn "4- Salir."
     printfn "#############################################"
@@ -35,9 +35,30 @@ let rec menu() =
 
         menu()
     | "2" ->
-        printfn "====================================="
-        printfn "Prueba"
-        printfn "====================================="
+        // Funciones de Primera Clase y Orden Superior
+        // Función normal
+        let multiplicar x y = x * y
+
+        // Funciones de primera clase
+        // Se pueden guardar en variables, pasar como argumento y devolver
+        let operacion = multiplicar
+
+        let resultadoPrimeraClase = operacion 5 3
+        printfn "Resultado Multiplicación 5 + 3 = %d" resultadoPrimeraClase
+
+        // Función de orden superior
+        // Recibe otra función como parámetro
+        let dosVeces f valor =
+            f (f valor)
+
+        let porDos numero = numero * 2
+        let entreDos numero = numero / 2.0
+        let resultadoPorDos = dosVeces porDos 4
+        let resultatoEntreDos = dosVeces entreDos 18
+
+        printfn "Aplicar dos veces por dos 4 = %d" resultadoPorDos
+        printfn "Aplicar dos veces entre dos 18 = %.1f" resultatoEntreDos
+        
         menu()
     | "3" ->
         printfn "====================================="
