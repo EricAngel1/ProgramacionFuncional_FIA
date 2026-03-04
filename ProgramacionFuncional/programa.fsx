@@ -9,9 +9,9 @@
 
 (*
     Bueno, como introduccion inicial, el programa hemos hecho mediante un menu
-    para que podamos ver en ejecucion diferentes ejemplos algunas caracteristicas claves de
+    para que podamos ver en ejecucion diferentes ejemplos de algunas caracteristicas claves de
     la programacion funcional. En este caso como primer inicio, ya aplicamos una de las caracteristicas que es la recursividad
-    en el menu de la funcion, lo facilita el codigo y lo hace mas limpio.
+    en el menu de la funcion, lo que facilita el codigo y lo hace mas limpio.
 
     Para este caso, impelementamos al menos 3 caracteristicas comunes, que es:
     1. Funcion Pura: que todo lo que entra, produce la misma salida
