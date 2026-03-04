@@ -61,8 +61,23 @@ let rec menu() =
         
         menu()
     | "3" ->
-        printfn "====================================="
-        printfn "Prueba2"
+        // Recursividad con Pattern Matching
+        // En lugar de usar "if/else", usamos coincidencia de patrones para definir la función factorial
+        // Esto define el comportamiento de la función factorial para diferentes casos
+
+        let rec factorial n =
+            match n with
+            | 0 | 1 -> 1 // Caso base: factorial de 0 o 1 es 1 
+            | x -> x * factorial (x - 1) // Caso recursivo: n! = n * (n-1)!
+
+
+        // Pedimos al usuario un número para calcular su factorial
+        printf "Ingresa un número para calcular su factorial: "
+        let numero = System.Console.ReadLine() |> int
+
+        // Calculamos el factorial usando la función recursiva y mostramos el resultado
+        let resultadoFactorial = factorial numero
+        printfn "El factorial de %d es %d" numero resultadoFactorial
         printfn "====================================="
         menu()
     | "4" ->
