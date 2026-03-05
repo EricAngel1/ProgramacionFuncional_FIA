@@ -12,4 +12,10 @@ write("3. Concatenar"),nl,
 write("4. Agregar"),nl, 
 write("5. Eliminar"),nl,          
 write("6. Longitud"),nl,
-write("7. Ordenamiento"),nl.           
+write("7. Ordenamiento"),nl.
+
+concatenar([],L2,L2).
+concatenar([H|T],L2,[H|L3]):- concatenar(T,L2,L3).
+
+longitud([],0).
+longitud([_|T], N) :- longitud(T, N1), N is N1 + 1.
