@@ -10,4 +10,12 @@ evapreoperacion([historial_clinico, examenes_laboratorio,evaluacion_preanestesic
 %lista5
 modulointeligente([evaluacion_preoperacion, frecuencia_cardiaca, hemorragia, infeccion, niveles_de_riesgo, presion_arterial, probabilidad_de_complicaciones, signos_vitales]).
 %lista6
+
 operacion([ginecologia, otorrinolaringologia,urologia,cirugia_general]).
+
+:- dynamic robothw/1.
+:- dynamic robotsw/1.
+:- dynamic versiones/1.
+:- dynamic evapreoperacion/1.
+:- dynamic modulointeligente/1.
+:- dynamic operacion/1.
