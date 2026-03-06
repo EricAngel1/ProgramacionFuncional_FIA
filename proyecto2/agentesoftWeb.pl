@@ -9,18 +9,19 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/http_files)).
-:- http_handler(root(agregar), handle_agregar_form, []).
-:- http_handler(root(agregar_ejecutar), handle_agregar_ejecutar, []).
-:- http_handler(root(eliminar), handle_eliminar_form, []).
-:- http_handler(root(eliminar_ejecutar), handle_eliminar_ejecutar, []).
 
 :- consult('baseconocimiento.pl').
+:- consult('agentesoft.pl').
 
 % RUTAS
 :- http_handler(root(.), http_reply_file('index.html', []), []).
 :- http_handler(root(buscar), handle_buscar_simple, []).
 :- http_handler(root(confirmar_agregar), handle_confirmar_agregar, []).
 :- http_handler(root(listar), handle_listar, []).
+:- http_handler(root(agregar), handle_agregar_form, []).
+:- http_handler(root(agregar_ejecutar), handle_agregar_ejecutar, []).
+:- http_handler(root(eliminar), handle_eliminar_form, []).
+:- http_handler(root(eliminar_ejecutar), handle_eliminar_ejecutar, []).
 
 servidor(Puerto) :-
     http_server(http_dispatch, [port(Puerto)]),
