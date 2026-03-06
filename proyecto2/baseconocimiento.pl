@@ -1,4 +1,14 @@
 %Creación de listas conforme al tema de robot DaVinci
+
+
+:- dynamic robothw/1.
+:- dynamic robotsw/1.
+:- dynamic versiones/1.
+:- dynamic evapreoperacion/1.
+:- dynamic modulointeligente/1.
+:- dynamic operacion/1.
+
+
 %lista1
 robothw([torre_de_vision, consola_del_cirujano, carro_del_paciente]).
 %lista2
@@ -12,10 +22,3 @@ modulointeligente([evaluacion_preoperacion, frecuencia_cardiaca, hemorragia, inf
 %lista6
 
 operacion([ginecologia, otorrinolaringologia,urologia,cirugia_general]).
-
-:- dynamic robothw/1.
-:- dynamic robotsw/1.
-:- dynamic versiones/1.
-:- dynamic evapreoperacion/1.
-:- dynamic modulointeligente/1.
-:- dynamic operacion/1.
