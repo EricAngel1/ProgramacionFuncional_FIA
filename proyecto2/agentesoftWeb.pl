@@ -9,6 +9,10 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/http_files)).
+:- http_handler(root(agregar), handle_agregar_form, []).
+:- http_handler(root(agregar_ejecutar), handle_agregar_ejecutar, []).
+:- http_handler(root(eliminar), handle_eliminar_form, []).
+:- http_handler(root(eliminar_ejecutar), handle_eliminar_ejecutar, []).
 
 :- consult('baseconocimiento.pl').
 
@@ -88,3 +92,75 @@ listar_web([H|T]) :-
     % En lugar de write("--- "), usamos etiquetas de lista HTML <li>
     format('<li>~w</li>', [H]),
     listar_web(T).
+handle_agregar_form(_Request) :-
+    format('Content-type: text/html; charset=UTF-8~n~n', []),
+    format('<html><body>
+        <h2>Agregar elemento a una lista</h2>
+        <form action="/agregar_ejecutar" method="GET">
+            <label>Nombre de la lista:</label><br>
+            <input type="text" name="lista" placeholder="ej: robotsw" required><br><br>
+            <label>Elemento a agregar:</label><br>
+            <input type="text" name="elemento" placeholder="ej: nuevo_modulo" required><br><br>
+            <button type="submit" style="background:green;color:white;padding:8px 16px;">Agregar</button>
+            <a href="/"><button type="button">Cancelar</button></a>
+        </form>
+    </body></html>', []).
+
+% Ejecutar agregar
+handle_agregar_ejecutar(Request) :-
+    http_parameters(Request, [
+        lista(NombreStr, []),
+        elemento(ElemStr, [])
+    ]),
+    atom_string(Nombre, NombreStr),
+    atom_string(Elemento, ElemStr),
+    format('Content-type: text/html; charset=UTF-8~n~n', []),
+    (   agregar(Elemento, Nombre)
+    ->  format('<html><body>
+                  <h2>✅ Elemento agregado</h2>
+                  <p>"~w" fue agregado a la lista <b>~w</b>.</p>
+                  <a href="/">Volver al inicio</a>
+               </body></html>', [Elemento, Nombre])
+    ;   format('<html><body>
+                  <h2>⚠️ No se pudo agregar</h2>
+                  <p>El elemento "~w" ya existe en la lista <b>~w</b> o la lista no existe.</p>
+                  <a href="/">Volver al inicio</a>
+               </body></html>', [Elemento, Nombre])
+    ).
+
+
+handle_eliminar_form(_Request) :-
+    format('Content-type: text/html; charset=UTF-8~n~n', []),
+    format('<html><body>
+        <h2>Eliminar elemento de una lista</h2>
+        <form action="/eliminar_ejecutar" method="GET">
+            <label>Nombre de la lista:</label><br>
+            <input type="text" name="lista" placeholder="ej: robotsw" required><br><br>
+            <label>Elemento a eliminar:</label><br>
+            <input type="text" name="elemento" placeholder="ej: simulacion" required><br><br>
+            <button type="submit" style="background:red;color:white;padding:8px 16px;">Eliminar</button>
+            <a href="/"><button type="button">Cancelar</button></a>
+        </form>
+    </body></html>', []).
+
+% Ejecutar eliminar
+handle_eliminar_ejecutar(Request) :-
+    http_parameters(Request, [
+        lista(NombreStr, []),
+        elemento(ElemStr, [])
+    ]),
+    atom_string(Nombre, NombreStr),
+    atom_string(Elemento, ElemStr),
+    format('Content-type: text/html; charset=UTF-8~n~n', []),
+    (   eliminar(Elemento, Nombre)
+    ->  format('<html><body>
+                  <h2>🗑️ Elemento eliminado</h2>
+                  <p>"~w" fue eliminado de la lista <b>~w</b>.</p>
+                  <a href="/">Volver al inicio</a>
+               </body></html>', [Elemento, Nombre])
+    ;   format('<html><body>
+                  <h2>⚠️ No se pudo eliminar</h2>
+                  <p>El elemento "~w" no existe en la lista <b>~w</b> o la lista no existe.</p>
+                  <a href="/">Volver al inicio</a>
+               </body></html>', [Elemento, Nombre])
+    ).
