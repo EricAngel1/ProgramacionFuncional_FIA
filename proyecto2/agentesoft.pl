@@ -39,7 +39,12 @@ ejecutar(5) :- write("Ingrese el nombre de la lista: "), read(ListaName),
                eliminar(Elemento, ListaName).
 % ejecutar(6):- ...
 % ejecutar(7):- ...
-
+ejecutar(7) :-
+    write("Ingrese el nombre de la lista: "), read(ListaName),
+    Term =.. [ListaName, Lista],
+    call(Term),
+    sort(Lista,Ordenada),
+    write("Lista ordenada: "), write(Ordenada).
 
 
 %#######################################################################
