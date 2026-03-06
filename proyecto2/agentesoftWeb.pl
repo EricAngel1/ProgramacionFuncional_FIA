@@ -23,7 +23,8 @@
 :- http_handler(root(eliminar), handle_eliminar_form, []).
 :- http_handler(root(eliminar_ejecutar), handle_eliminar_ejecutar, []).
 :- http_handler(root(ordenar), handle_ordenar, []).
-
+:- http_handler(root(concatenar), handle_concatenar, []).
+:- http_handler(root(longitud), handle_longitud, []).
 servidor(Puerto) :-
     http_server(http_dispatch, [port(Puerto)]),
     format('Servidor en: http://localhost:~w~n', [Puerto]).
@@ -185,3 +186,49 @@ handle_ordenar(Request) :-
 
     format('<br><a href="/">Volver al inicio</a>', []),
     format('</body></html>', []).
+
+
+%Concatenar dos listas
+handle_concatenar(Request) :-
+    http_parameters(Request, [
+        lista1(NombreStr1, []),
+        lista2(NombreStr2, [])
+    ]),
+    atom_string(Nombre1, NombreStr1),
+    atom_string(Nombre2, NombreStr2),
+
+    format('Content-type: text/html; charset=UTF-8~n~n', []),
+    format('<html><body>', []),
+
+    Term1 =.. [Nombre1, L1],
+    Term2 =.. [Nombre2, L2],
+    (   current_predicate(Nombre1/1), call(Term1),
+        current_predicate(Nombre2/1), call(Term2)
+    ->  concatenar(L1, L2, Resultado),
+        format('<h1>Resultado de la Concatenación</h1>', []),
+        format('<p>Lista 1 (<b>~w</b>): ~w</p>', [Nombre1, L1]),
+        format('<p>Lista 2 (<b>~w</b>): ~w</p>', [Nombre2, L2]),
+        format('<h3>Unión resultante:</h3><p>~w</p>', [Resultado])
+    ;   format('<h1>Error</h1><p>Una o ambas listas no existen en la base de conocimiento.</p>', [])
+    ),
+    format('<br><a href="/">Volver al inicio</a></body></html>', []).
+
+%Calcular longitud de una lista
+handle_longitud(Request) :-
+    http_parameters(Request, [
+        lista(NombreStr, [])
+    ]),
+    atom_string(Nombre, NombreStr),
+    
+    format('Content-type: text/html; charset=UTF-8~n~n', []),
+    format('<html><body>', []),
+
+    Term =.. [Nombre, L],
+    
+    (   current_predicate(Nombre/1), call(Term)
+    ->  longitud(L, N),
+        format('<h1>Longitud de la lista ~w</h1>', [Nombre]),
+        format('<h3>Total de elementos: ~w</h3>', [N])
+    ;   format('<h1>Error</h1><p>La lista <b>~w</b> no existe.</p>', [Nombre])
+    ),
+    format('<br><a href="/">Volver al inicio</a></body></html>', []).
