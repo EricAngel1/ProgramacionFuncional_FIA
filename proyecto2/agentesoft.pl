@@ -31,18 +31,25 @@ ejecutar(2):-
         comprobarListilla(Lista)
     ).
 ejecutar(3) :- 
-               write("Ingrese la primera lista a concatenar"), read(L2),
-               write("Ingrese la segunda lista a concatenar"), read(L3),
-               concatenar(L2,L3).
+               write("Ingrese el nombre de la primera lista: "), read(Lista1),
+               write("Ingrese el nombre de le segunda lista: "), read(Lista2),
+               Term1 =.. [Lista1, ListaA], call(Term1),
+               Term2 =.. [Lista2, ListaB], call(Term2),
+               concatenar(ListaA, ListaB, Resultado),
+               write("Unión: "), nl,
+               write(Resultado).
 ejecutar(4) :- write("Ingrese el nombre de la lista: "), read(ListaName),
                write("Ingrese el elemento a agregar: "), read(Elemento),
                agregar(Elemento, ListaName).
 ejecutar(5) :- write("Ingrese el nombre de la lista: "), read(ListaName),
                write("Ingrese el elemento a eliminar: "), read(Elemento),
                eliminar(Elemento, ListaName).
-ejecutar(6) :-
-               write("Ingrese la lista a analizar: "), read(ListaL),
-               longitud(ListaL).     
+ejecutar(6) :- write("Ingrese el nombre de la lista a analizar: "), read(Nombre),
+               Term =.. [Nombre, Lista],
+               (    call(Term)
+               ->   longitud(Lista, N),
+                    write("La longitud de "), write(Nombre), write(" es: "), write(N)
+                ;   write("Lista no encontrada...")).        
 ejecutar(7) :-
     write("Ingrese el nombre de la lista: "), read(ListaName),
     Term =.. [ListaName, Lista],
@@ -131,5 +138,6 @@ guardar_base :-
 longitud([],0).
 
 longitud([_|T], N) :- longitud(T, N1), N is N1 + 1.
+
 
 
