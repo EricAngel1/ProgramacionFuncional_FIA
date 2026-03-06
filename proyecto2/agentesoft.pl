@@ -52,10 +52,8 @@ ejecutar(6) :- write("Ingrese el nombre de la lista a analizar: "), read(Nombre)
                 ;   write("Lista no encontrada...")).        
 ejecutar(7) :-
     write("Ingrese el nombre de la lista: "), read(ListaName),
-    Term =.. [ListaName, Lista],
-    call(Term),
-    sort(Lista,Ordenada),
-    write("Lista ordenada: "), write(Ordenada).
+        organizar(ListaName, Ordenada),
+        write("Lista ordenada: "), write(Ordenada).
 
 
 %#######################################################################
@@ -139,5 +137,8 @@ longitud([],0).
 
 longitud([_|T], N) :- longitud(T, N1), N is N1 + 1.
 
-
+organizar(ListaName, Ordenada) :-
+    Term =.. [ListaName, Lista],
+    call(Term),
+    sort(Lista, Ordenada).
 

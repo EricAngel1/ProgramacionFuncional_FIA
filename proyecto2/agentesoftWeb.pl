@@ -22,6 +22,7 @@
 :- http_handler(root(agregar_ejecutar), handle_agregar_ejecutar, []).
 :- http_handler(root(eliminar), handle_eliminar_form, []).
 :- http_handler(root(eliminar_ejecutar), handle_eliminar_ejecutar, []).
+:- http_handler(root(ordenar), handle_ordenar, []).
 
 servidor(Puerto) :-
     http_server(http_dispatch, [port(Puerto)]),
@@ -165,3 +166,22 @@ handle_eliminar_ejecutar(Request) :-
                   <a href="/">Volver al inicio</a>
                </body></html>', [Elemento, Nombre])
     ).
+
+%Ordenar una lista
+handle_ordenar(Request) :-
+    http_parameters(Request, [
+        lista(NombreStr, [])
+    ]),
+    atom_string(Nombre, NombreStr),
+
+    format('Content-type: text/html; charset=UTF-8~n~n', []),
+    format('<html><body>', []),
+
+    (   organizar(Nombre, Ordenada)
+    ->  format('<h1>Lista ordenada:</h1>', []),
+        format('<p>~w</p>', [Ordenada])
+    ;   format('<h1>Error: La lista ~w no existe</h1>', [Nombre])
+    ),
+
+    format('<br><a href="/">Volver al inicio</a>', []),
+    format('</body></html>', []).
