@@ -30,15 +30,19 @@ ejecutar(2):-
         write("Segun mis fuentes, los elementos de la lista "), write(NombredeLista), write(" son: "), nl,
         comprobarListilla(Lista)
     ).
-% ejecutar(3):- ...
+ejecutar(3) :- 
+               write("Ingrese la primera lista a concatenar"), read(Lista1),
+               write("Ingrese la segunda lista a concatenar"), read(Lista2),
+               concatenar(lista1,Lista2, Respuesta).
 ejecutar(4) :- write("Ingrese el nombre de la lista: "), read(ListaName),
                write("Ingrese el elemento a agregar: "), read(Elemento),
                agregar(Elemento, ListaName).
 ejecutar(5) :- write("Ingrese el nombre de la lista: "), read(ListaName),
                write("Ingrese el elemento a eliminar: "), read(Elemento),
                eliminar(Elemento, ListaName).
-% ejecutar(6):- ...
-% ejecutar(7):- ...
+ejecutar(6) :-
+               write("Ingrese la lista a analizar: "), read(ListaL),
+               longitud(ListaL, N).     
 ejecutar(7) :-
     write("Ingrese el nombre de la lista: "), read(ListaName),
     Term =.. [ListaName, Lista],
@@ -127,3 +131,4 @@ guardar_base :-
 longitud([],0).
 
 longitud([_|T], N) :- longitud(T, N1), N is N1 + 1.
+
