@@ -15,22 +15,25 @@
 
 % RUTAS
 :- http_handler(root(.), http_reply_file('index.html', []), []).
-:- http_handler(root(buscar), handle_buscar_simple, []).
-:- http_handler(root(confirmar_agregar), handle_confirmar_agregar, []).
-:- http_handler(root(listar), handle_listar, []).
-:- http_handler(root(agregar), handle_agregar_form, []).
-:- http_handler(root(agregar_ejecutar), handle_agregar_ejecutar, []).
-:- http_handler(root(eliminar), handle_eliminar_form, []).
-:- http_handler(root(eliminar_ejecutar), handle_eliminar_ejecutar, []).
-:- http_handler(root(ordenar), handle_ordenar, []).
-:- http_handler(root(concatenar), handle_concatenar, []).
-:- http_handler(root(longitud), handle_longitud, []).
+:- http_handler(root('fondo.png'), http_reply_file('fondo.png', []), []).
+:- http_handler(root('udg.png'), http_reply_file('udg.png', []), []).
+:- http_handler(root(buscar), buscarWeb, []).
+:- http_handler(root(confirmar_agregar), agregarWeb, []).
+:- http_handler(root(listar), listarWeb, []).
+:- http_handler(root(agregar_ejecutar), agregarEjecuWeb, []).
+:- http_handler(root(eliminar_ejecutar), eliminarEjecuWeb, []).
+:- http_handler(root(ordenar), ordenarWeb, []).
+:- http_handler(root(concatenar), concatenarWeb, []).
+:- http_handler(root(longitud), longitudWeb, []).
+
 servidor(Puerto) :-
     http_server(http_dispatch, [port(Puerto)]),
     format('Servidor en: http://localhost:~w~n', [Puerto]).
 
+
+%#############################################################################
 % Lógica de Búsqueda y Pregunta en Interfaz
-handle_buscar_simple(Request) :-
+buscarWeb(Request) :-
     http_parameters(Request, [
         lista(NombreStr, []),
         elemento(ElemStr, [])
@@ -43,7 +46,7 @@ handle_buscar_simple(Request) :-
     (   current_predicate(Nombre/1), call(Termino)
     ->  (member(Elemento, ListaReal)
         -> format('<h1>Resultado: SI EXISTE</h1><a href="/">Volver</a>', [])
-        ;  % SI NO EXISTE: Mostramos la pregunta y un botón para agregar
+        ;  
            format('<h1>Resultado: NO EXISTE</h1>', []),
            format('<p>¿Deseas agregar "<b>~w</b>" a la lista "<b>~w</b>"?</p>', [Elemento, Nombre]),
            format('<form action="/confirmar_agregar" method="GET">
@@ -56,8 +59,8 @@ handle_buscar_simple(Request) :-
     ;   format('<h1>Error: La lista ~w no existe</h1><a href="/">Volver</a>', [Nombre])
     ).
 
-% Lógica para ejecutar el agregado real
-handle_confirmar_agregar(Request) :-
+% Lógica para asi ejecutar el agregado real
+agregarWeb(Request) :-
     http_parameters(Request, [
         lista(NombreStr, []),
         elemento(ElemStr, [])
@@ -66,12 +69,13 @@ handle_confirmar_agregar(Request) :-
     atom_string(Elemento, ElemStr),
     (   agregar(Elemento, Nombre)
     ->  format('Content-type: text/html; charset=UTF-8~n~n', []),
-        format('<h1>¡Listo!</h1><p>Se ha agregado "~w" a ~w.</p><a href="/">Volver al inicio</a>', [Elemento, Nombre])
+        format('<h1>Creador Mio</h1><p>Se ha agregado "~w" a ~w.</p><a href="/">Volver al inicio</a>', [Elemento, Nombre])
     ;   format('Content-type: text/html; charset=UTF-8~n~n', []),
         format('<h1>Error</h1><p>No se pudo guardar.</p><a href="/">Volver</a>', [])
     ).
 
-handle_listar(Request) :-
+% La lógica para listar las listas
+listarWeb(Request) :-
     http_parameters(Request, [
         lista(NombreStr, [])
     ]),
@@ -83,71 +87,42 @@ handle_listar(Request) :-
     (   current_predicate(Nombre/1), call(Termino)
     ->  format('<h1>Elementos de la lista: ~w</h1>', [Nombre]),
         format('<ul>', []),
-        % Llamamos a nuestra versión web de comprobarListilla
+        % aqui se llama nuestra versión web de comprobarListilla
         listar_web(ListaReal),
         format('</ul>', [])
     ;   format('<h1>Error: La lista ~w no existe</h1>', [Nombre])
     ),
     format('<br><a href="/">Volver al inicio</a></body></html>', []).
-% Tu lógica de comprobarListilla adaptada a HTML
+
+% la version web
 listar_web([]).
 listar_web([H|T]) :-
-    % En lugar de write("--- "), usamos etiquetas de lista HTML <li>
     format('<li>~w</li>', [H]),
     listar_web(T).
-handle_agregar_form(_Request) :-
-    format('Content-type: text/html; charset=UTF-8~n~n', []),
-    format('<html><body>
-        <h2>Agregar elemento a una lista</h2>
-        <form action="/agregar_ejecutar" method="GET">
-            <label>Nombre de la lista:</label><br>
-            <input type="text" name="lista" placeholder="ej: robotsw" required><br><br>
-            <label>Elemento a agregar:</label><br>
-            <input type="text" name="elemento" placeholder="ej: nuevo_modulo" required><br><br>
-            <button type="submit" style="background:green;color:white;padding:8px 16px;">Agregar</button>
-            <a href="/"><button type="button">Cancelar</button></a>
-        </form>
-    </body></html>', []).
+
+%#############################################################################
+% Lógica de agregar los elementos
+
 
 % Ejecutar agregar
-handle_agregar_ejecutar(Request) :-
+agregarEjecuWeb(Request) :-
     http_parameters(Request, [
         lista(NombreStr, []),
         elemento(ElemStr, [])
     ]),
     atom_string(Nombre, NombreStr),
     atom_string(Elemento, ElemStr),
-    format('Content-type: text/html; charset=UTF-8~n~n', []),
     (   agregar(Elemento, Nombre)
-    ->  format('<html><body>
-                  <h2>✅ Elemento agregado</h2>
-                  <p>"~w" fue agregado a la lista <b>~w</b>.</p>
-                  <a href="/">Volver al inicio</a>
-               </body></html>', [Elemento, Nombre])
-    ;   format('<html><body>
-                  <h2>⚠️ No se pudo agregar</h2>
-                  <p>El elemento "~w" ya existe en la lista <b>~w</b> o la lista no existe.</p>
-                  <a href="/">Volver al inicio</a>
-               </body></html>', [Elemento, Nombre])
+    ->  format('Content-type: text/html; charset=UTF-8~n~n', []),
+        format('<h1>Creador Mio</h1><p>Se ha agregado "~w" a ~w.</p><a href="/">Volver al inicio</a>', [Elemento, Nombre])
+    ;   format('Content-type: text/html; charset=UTF-8~n~n', []),
+        format('<h1>Error</h1><p>No se pudo guardar.</p><a href="/">Volver</a>', [])
     ).
 
 
-handle_eliminar_form(_Request) :-
-    format('Content-type: text/html; charset=UTF-8~n~n', []),
-    format('<html><body>
-        <h2>Eliminar elemento de una lista</h2>
-        <form action="/eliminar_ejecutar" method="GET">
-            <label>Nombre de la lista:</label><br>
-            <input type="text" name="lista" placeholder="ej: robotsw" required><br><br>
-            <label>Elemento a eliminar:</label><br>
-            <input type="text" name="elemento" placeholder="ej: simulacion" required><br><br>
-            <button type="submit" style="background:red;color:white;padding:8px 16px;">Eliminar</button>
-            <a href="/"><button type="button">Cancelar</button></a>
-        </form>
-    </body></html>', []).
 
 % Ejecutar eliminar
-handle_eliminar_ejecutar(Request) :-
+eliminarEjecuWeb(Request) :-
     http_parameters(Request, [
         lista(NombreStr, []),
         elemento(ElemStr, [])
@@ -168,8 +143,11 @@ handle_eliminar_ejecutar(Request) :-
                </body></html>', [Elemento, Nombre])
     ).
 
+%#############################################################################
+% Lógica para ordenar la lista 
+
 %Ordenar una lista
-handle_ordenar(Request) :-
+ordenarWeb(Request) :-
     http_parameters(Request, [
         lista(NombreStr, [])
     ]),
@@ -187,9 +165,11 @@ handle_ordenar(Request) :-
     format('<br><a href="/">Volver al inicio</a>', []),
     format('</body></html>', []).
 
+%#############################################################################
+% Lógica para concatenar las listas
 
 %Concatenar dos listas
-handle_concatenar(Request) :-
+concatenarWeb(Request) :-
     http_parameters(Request, [
         lista1(NombreStr1, []),
         lista2(NombreStr2, [])
@@ -213,8 +193,11 @@ handle_concatenar(Request) :-
     ),
     format('<br><a href="/">Volver al inicio</a></body></html>', []).
 
+%#############################################################################
+% Lógica para ver la longitud de la lista
+
 %Calcular longitud de una lista
-handle_longitud(Request) :-
+longitudWeb(Request) :-
     http_parameters(Request, [
         lista(NombreStr, [])
     ]),
@@ -232,3 +215,6 @@ handle_longitud(Request) :-
     ;   format('<h1>Error</h1><p>La lista <b>~w</b> no existe.</p>', [Nombre])
     ),
     format('<br><a href="/">Volver al inicio</a></body></html>', []).
+
+%#############################################################################
+% Se acabo...

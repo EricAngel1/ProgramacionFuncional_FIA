@@ -101,8 +101,8 @@ agregar(Elemento, ListaName) :-
     append(Lista, [Elemento], NuevaLista),
     TermNuevo =.. [ListaName, NuevaLista],
     assertz(TermNuevo),
-    guardar_base,
-    write("Elemento agregado exitosamente.").
+    guardar_base.
+    %write("Elemento agregado exitosamente.").
 
 eliminar(Elemento, ListaName) :-
     TermConsulta =.. [ListaName, Lista],
