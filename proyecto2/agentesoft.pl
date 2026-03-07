@@ -28,7 +28,7 @@ ejecutar(1) :-
         ->  write("Si esta"), nl
         ;   % un if si no esta
             write("No se encuentra en la lista."), nl,
-            write("¿Deseas agregar '"), write(Elemento), 
+            write("¿Deseas agregar "), write(Elemento), 
             write(" a la lista "), write(NombreLista), write("? (s/n): "),
             read(Respuesta),
             (   Respuesta == s
